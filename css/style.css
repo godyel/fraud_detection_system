@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+:root{
+    --primary: hsla(275,71.4%,71.2%,0.65);
+    --secondary: hsla(240,16.3%,40.8%,0.65);
+    --tertiary: hsla(236,47.7%,61.0%,0.65);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, var(--tertiary),var(--secondary),var(--primary)), 
+    url('../img/back.jpg') no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.reg-row h1 {
+    color: #FFFFFF;
+    font-size: 4em;
+    margin: 200px 5px;
+
+}
+
+.reg-row h4 {
+    color: #FFFFFF;
+}
+
+
+.reg-form {
+    background: #575779;
+    border-radius: 20px;
+    padding: 20px 30px;
+    box-shadow: -5px -5px 10px #323770, 5px 5px 6px rgba(0, 0, 0, 0.1);
+   
+}
+
+.reg-form label {
+    color: #EEEDF0;
+    font-size: 0.9em;
+}
+
+.reg-form input,
+.reg-form input:focus{
+    background: #575779;
+    border: 1px solid gray;
+    /* box-shadow: 2px 1px 10px #292727; */
+    border-radius: 10px;
+    outline: none;
+    color: #EEEDF0;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}    
+
+.reg-form .btn-success, .reg-form .btn-success:hover  {
+    background-color: #BE81EA;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.signup-callout {
+    color: #EEEDF0;
+    font-size: 0.8em;
+}
+.signup-callout a {
+    text-decoration: none;
+    color: #BE81EA;
+}
+
+.lines {
+    display: flex;
+    justify-content: center;
+}
