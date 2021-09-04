@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+
+    <link rel="stylesheet" href="css/payment.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+</head>
+
+<body class="body">
+
+    <form action="" class="form-horizontal form-payment">
+        <h3 class="text-center text-white "> Payment Form </h3>
+        <div class="lines mb-3">
+            <hr class="m-2" style="width: 50px; height: 3px; color: #CB69C1;">
+            <hr class="m-2" style="width: 50px; height: 3px; color: #BE81EA;">
+        </div>
+
+        <!-- Account section -->
+        <h4 class="text-white">Account</h4>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class=" input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-user icon"></i></span>
+                        <input type="text" class="form-control" placeholder="Fullname" aria-label="fullname"
+                            aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <div class=" input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-user icon"></i></span>
+                        <input type="text" class="form-control" placeholder="Username" aria-label="username"
+                            aria-describedby="basic-addon1">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email text -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">   <i class="fa fa-envelope icon"></i> </span>
+            <input type="email" class="form-control" placeholder="Email" aria-label="email" name="email"
+                aria-describedby="basic-addon1">
+        </div>
+
+        <!--Address text -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">  <i class="fa fa-map-marker icon" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" placeholder="Address" aria-label="address" name="address"
+                aria-describedby="basic-addon1">
+        </div>
+
+        <!--City text -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"><i class="fa fa-institution icon"></i></span>
+            <input type="text" class="form-control" placeholder="City" aria-label="city" name="city"
+                aria-describedby="basic-addon1">
+        </div>
+
+        <!-- Date of birth-->
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="mb-2 col-md-6 col-sm-6 control-label" for="dob">
+                        Date of Birth
+                    </label> 
+                    <input name="date" type="date" class=" mb-3 form-control input-md">
+                </div>
+
+                <div class="col-md-6 col-sm-6 ">
+                    <label class="mb-2 col-md-6 col-sm-6 control-label" for="dob">
+                        Gender
+                    </label> 
+                    <div class="gender">
+                        <input type="radio" name="gender" id="">
+                        <label for="male"> Male</label>
+
+                        <input type="radio" name="gender" id="">
+                        <label for="female"> Female</label>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Details -->
+        <label for="payment-details" class="mb-2"> Payment Details </label>
+
+        <!-- Card Number -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">   <i class="fa fa-credit-card icon"></i></span>
+            <input type="text" class="form-control" placeholder="Card No 1111-2222-3333-4444" aria-label="card-number" name="card-number"
+                aria-describedby="basic-addon1">
+        </div>
+
+        <!-- CVC -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">  <i class="fa fa-user icon"></i> </span>
+            <input type="text" class="form-control" placeholder="CVC 682" aria-label="cvc" name="cvc"
+                aria-describedby="basic-addon1">
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class=" input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">  <i class="fa fa-calendar icon" aria-hidden="true"></i></span>
+                        <input type="date" class="form-control" placeholder="Expiry Date" aria-label="expirydate"
+                            aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <div class=" input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-money icon" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" placeholder="Amount" aria-label="amount"
+                            aria-describedby="basic-addon1">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- Button -->
+         <div class="form-group text-center">
+            <div class="col-md-12">
+                <button class="form-control btn btn-success"> PAY NOW </button>
+            </div>
+        </div>
+        
+
+
+
+
+
+    </form>
+
+
+
+
+
+
+
+</body>
+
+</html>
