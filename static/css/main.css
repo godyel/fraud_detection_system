@@ -6,6 +6,8 @@
     font-family: 'Poppins', sans-serif;
 }
 
+
+
 body.loginWrapper {
     background: linear-gradient(135deg, #6C72CB,#575779,#BE81EA);
     display: flex;
@@ -14,6 +16,16 @@ body.loginWrapper {
     font-family: 'Poppins', sans-serif;
     width: 100%;
     height: 100vh;
+}
+
+small{
+  visibility: hidden;
+  font-size: .7rem;
+}
+
+small.error{
+  visibility: visible;
+  color: #fc7070 !important;
 }
 
 /** LOGIN CSS **/
@@ -264,4 +276,9 @@ body.paymentWrapper {
 
 ::placeholder {
   color: #a5a3a8 !important;
+}
+
+
+input.form-control.error{
+  border: 1px solid #ee6d22 !important;
 }

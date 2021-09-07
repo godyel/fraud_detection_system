@@ -40,7 +40,10 @@
                       Username
                   </label>
                   <div class="col-md-12">
-                      <input name="username" type="text" class="mb-3 form-control" required>
+                      <input name="username" type="text" class=" form-control" required>
+                      {% if error %}
+                      <small class="error">{{error.username}}</small>
+                      {% endif %}
                   </div>
               </div>
               <!-- email input -->
@@ -59,7 +62,8 @@
                       Password
                   </label>
                   <div class="col-md-12">
-                      <input required name="password" type="password" class=" mb-3 form-control input-md">
+                      <input id="password" required name="password" type="password" class="form-control input-md">
+                      <small class="">asdfjalksdjl</small>
                   </div>
 
               </div>
@@ -69,9 +73,9 @@
                   <label class="mb-2 col-md-12 control-label" for="password">
                       Confirm Password
                   </label>
-                  <div class="col-md-12">
-                      <input required name="confirm_password" type="password" class=" form-control input-md" />
-                      <small>asdfjalksdjl</small>
+                  <div class="col-md-12 mb-2">
+                      <input id="confirm_password" required name="confirm_password" type="password" class=" form-control input-md" />
+                      <small class="">asdfjalksdjl</small>
                   </div>
 
               </div>
@@ -97,8 +101,34 @@
 
 {% block Script %}
   <script>
+    const password_inputs = document.querySelectorAll('input[type^="password"')
 
-    alert('hello')
-
+    const removeError = (small) => {
+      if(small.classList.contains('error'))
+      small.classList.remove('error')
+    }
+    password_inputs.forEach( input => {
+        input.addEventListener('keyup', function(e){
+            const small = this.nextElementSibling;
+            if(this.id === 'password' && this.value.length < 8){
+                
+              small.setAttribute('class', 'error')
+              small.textContent = this.id.charAt(0).toUpperCase() + this.id.slice(1)
+                  + ' must exceed 8 characters'
+                
+            }
+            else if(this.id === password_inputs[1].id){
+                if(this.value !== password_inputs[0].value){
+                  small.setAttribute('class', 'error')
+                  small.textContent = this.id.charAt(0).toUpperCase() + this.id.slice(1)
+                      + ' does not match, try again'
+                }else{
+                  removeError(small)
+                }
+            }else{
+              removeError(small)
+            }
+        })
+    })
   </script>
 {% endblock Script %}
