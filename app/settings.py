@@ -24,7 +24,7 @@ TEMPLATE_DIR_LINK = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'django-insecure-s)xy9@@1*yi$t^b3upcb@ucvexbw9d$lk74m6pf3u7cjgiprrg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['webfraud-detection.herokuapp.com', '127.0.0.1']
 
