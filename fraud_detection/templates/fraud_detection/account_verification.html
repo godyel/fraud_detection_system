@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+<style>
+
+  
+</style>
+
+{% block Title %} Login {% endblock Title %}
+{% block BodyClassToggler %}loginWrapper{% endblock BodyClassToggler %}
+
+{% block Content %}
+<div class="frmPage">
+  <form action="" class="form-horizontal form-login">
+      <h4 class="text-white mb-3"> Security Questions </h4>
+      <!-- Security Questions field -->
+      <label for="question1">Question 1 <span class="text-danger">*</span></label>
+      <select class="form-select form-control mb-2" aria-label="Default select example" required>
+          <option selected>Select a  security question</option>
+          <option value="What is your favourite pet's name?">What is your favourite pet's name?</option>
+          <option value="What is your favourite movie?">What is your favourite movie?</option>
+          <option value="What is the one word you like saying?">What is the one word you like saying?</option>
+          <option value="What is your favourite teacher's name?">What is your favourite teacher's name?</option>
+      </select>
+      
+      <!-- Answer -->
+      <label for="answer1">Answer </label>
+      <div class="col-md-12">
+          <input name="answer1" type="text"  class="mb-3 form-control" required>
+      </div>
+
+       <!-- Security Questions field -->
+       <label for="question1">Question 2 <span class="text-danger">*</span></label>
+       <select class="form-select form-control mb-2" aria-label="Default select example" required>
+           <option selected>Select a  security question</option>
+           <option value="What is your favourite pet's name?">What is your favourite pet's name?</option>
+           <option value="What is your favourite movie?">What is your favourite movie?</option>
+           <option value="What is the one word you like saying?">What is the one word you like saying?</option>
+           <option value="What is your favourite teacher's name?">What is your favourite teacher's name?</option>
+       </select>
+       
+       <!-- Answer -->
+       <label for="answer1">Answer </label>
+       <div class="col-md-12">
+           <input name="answer1" type="text"  class="mb-3 form-control" required>
+       </div>
+
+        <!-- Security Questions field -->
+      <label for="question1">Question 3 <span class="text-danger">*</span></label>
+      <select class="form-select form-control mb-2" aria-label="Default select example" required>
+          <option selected>Select a  security question</option>
+          <option value="What is your favourite pet's name?">What is your favourite pet's name?</option>
+          <option value="What is your favourite movie?">What is your favourite movie?</option>
+          <option value="What is the one word you like saying?">What is the one word you like saying?</option>
+          <option value="What is your favourite teacher's name?">What is your favourite teacher's name?</option>
+      </select>
+      
+      <!-- Answer -->
+      <label for="answer1">Answer </label>
+      <div class="col-md-12">
+          <input name="answer1" type="text"  class="mb-3 form-control" required>
+      </div>
+
+
+
+
+
+  </form>
+
+</div> <!-- .frmPage -->
+{% endblock Content %}

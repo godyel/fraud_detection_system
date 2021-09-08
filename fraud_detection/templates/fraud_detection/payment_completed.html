@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+<style>
+
+  
+</style>
+
+{% block Title %} Login {% endblock Title %}
+{% block BodyClassToggler %}loginWrapper{% endblock BodyClassToggler %}
+
+{% block Content %}
+  <div class='d-flex align-items-center flex-column text-white'>
+    <h3 class="display-3">Transaction completed</h3>
+    <h4>Thank you</h4>
+    <div class="my-3" style="padding: 2rem;border-radius: 50%;box-shadow: 0 2px 4px 2px rgba(0,0,0,.2);">
+      <i class="fa fa-thumbs-up fa-3x"></i>
+    </div>
+    <br/>
+    <p style='color: #ccc'>Do you wish to perform another transaction</p>
+    <a href="{% url 'fraud_detection:payment' %}" class="btn btn-warning">continue</a>
+  </div>
+{% endblock Content %}

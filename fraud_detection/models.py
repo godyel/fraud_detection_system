@@ -26,18 +26,24 @@ class Profile (models.Model):
   gender = models.CharField(max_length=50, choices=GENDER, default='Male')
   user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
   card = models.OneToOneField(Card, on_delete=models.CASCADE, related_name='profile_card', blank=True, null=True)
+  completed = models.BooleanField(default=False,null=True)
   
   def __str__(self):
-    return str(self.fullname)
+    return str(self.user.username)
   
   
 class Transaction(models.Model):
   amount = models.CharField(max_length=9999)
-  card = models.ForeignKey(Card, related_name='transaction_card', on_delete=models.CASCADE)
+  profile = models.ForeignKey(Profile, related_name='profile', on_delete=models.CASCADE, null=True)
   created_at = models.DateTimeField(auto_now_add=True)
   
   def __str__(self):
-    return '{} - {}'.format(self.card, self.amount)
+    return '{} - {}'.format(self.profile, self.amount)
+  
+  
+  @property
+  def my_amount(self):
+    return self.amount
   
   
   

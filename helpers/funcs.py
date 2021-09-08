@@ -1,7 +1,10 @@
 
 import uuid
 from django.contrib.auth import SESSION_KEY
-from django.contrib.sessions import models
+from django.http.response import HttpResponse
+# from django.contrib.sessions import models
+from fraud_detection.models import Profile, Transaction
+from django.shortcuts import reverse, HttpResponseRedirect
 
 
 def getFormError(key, errors):
@@ -38,3 +41,36 @@ def CardData():
     'card_serial': card_serial_generator(),
     'amount': str(uuid.uuid4().int)[0:5],
   }  
+  
+  
+  
+  
+def checkTransactionReach10(username):
+  t = Transaction.objects.filter(profile__user__username= username)
+  flag = len(t) == 5
+  username.groups.add(2)
+  username.save()
+  print('T:.', t)
+  return True if  flag else False
+
+
+def fraud_check(_username):
+  p = Profile.objects.get(user__username = _username)
+  flag =  p.user.groups.filter(id = 2) is not None
+  # print('Groups ', flag)
+  
+  if(flag is not None):
+    t = Transaction.objects.filter(profile__user= _username)
+    pass
+  
+  return True if flag else False
+
+
+def controlTransactionView(username):
+  print('control func')
+  if checkTransactionReach10(username):
+    return HttpResponseRedirect(reverse('fraud_detection:account_verify'))
+  elif fraud_check(username):
+    return HttpResponseRedirect(reverse('fraud_detection:account_verify'))
+  else:
+    return HttpResponseRedirect(reverse('fraud_detection:payment_completed'))

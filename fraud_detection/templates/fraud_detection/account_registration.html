@@ -34,7 +34,7 @@
                   <span class="input-group-text" id="basic-addon1"><i class="fa fa-user icon"></i></span>
                   <input name='username' required type="text" class="form-control" placeholder="Username" aria-label="username"
                       aria-describedby="basic-addon1"
-                      value="{{ request.user}}"
+                      value="{{ request.session.username}}"
                       
                       >
               </div>

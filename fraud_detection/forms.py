@@ -57,7 +57,8 @@ class AccountForm(forms.ModelForm):
     p.address = data.get('address')
     p.city = data.get('city')
     p.dob = data.get('dob')
-    
+    p.completed = True
+    p.user.groups.add(1)
     if commit:
       p.save()
     
@@ -66,3 +67,11 @@ class AccountForm(forms.ModelForm):
   
   
  
+class PaymentForm(forms.Form):
+  card_number = forms.CharField(max_length=19)
+  card_serial = forms.CharField(max_length=7)
+  amount = forms.CharField(max_length=99)
+  created_at = forms.DateField()
+  
+  
+  
