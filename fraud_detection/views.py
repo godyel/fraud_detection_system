@@ -2,7 +2,7 @@ from fraud_detection.models import Profile, SecurityQuestion, Transaction
 from fraud_detection.decorators import account_completed
 from helpers.funcs import controlTransactionView, getCleanErrors
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render,HttpResponseRedirect, reverse
 from django.contrib.auth.decorators import login_required
 from .forms import PaymentForm, UserRegistrationForm, LoginForm, AccountForm
@@ -21,6 +21,10 @@ def home(request):
     
   return render(request, 'fraud_detection/index.html')
 
+def logoutUser(request):
+  request.session.clear()
+  logout(request)
+  return HttpResponseRedirect(reverse('fraud_detection:login'))  
 
 def loginUser(request):
   context = {}
@@ -132,18 +136,22 @@ def payment(request):
   
   context = {}
   if request.method == 'POST':
-    print(request.POST)
-    form = PaymentForm(request.POST)
-    if form.is_valid():
-      t = Transaction.objects.create(amount=form.cleaned_data.get('amount'), profile = Profile.objects.get(user = request.user))
-      t.save()
-      print('Transaction passed')
-      return controlTransactionView(request.user)
-    else:
-      context['error'] = 'Transaction failed,card details is incorrect'
-      print(form.errors.as_data())
-      
     
+    form = PaymentForm(request.POST)
+    data = [ request.POST.get(card) for card in request.POST if card != 'csrfmiddlewaretoken' ]
+    if form.is_valid():
+      profile = Profile.objects.get(user = request.user)
+      print(profile.card.card_number,data[0])
+      print(profile.card.card_number == data[0])
+      if profile.card.card_number == data[0] and profile.card.card_serial == data[1]:
+        t = Transaction.objects.create(amount=form.cleaned_data.get('amount'), profile = profile)
+        t.save()
+        print('Transaction passed')
+        return controlTransactionView(request.user,)
+      else:
+        context['error'] = 'Transaction failed,card details is incorrect'
+        print(form.errors.as_data())
+          
   return render(request, 'fraud_detection/payment.html', context)
   
 @login_required(login_url='/app/login')

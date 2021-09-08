@@ -8,6 +8,10 @@
 <div class="background-placeholder">
   <img src="{% static 'img/creditimg.jpg' %}" alt="">
 </div>
+<div>
+{% if error %}
+  <div class="alert alert-danger text-center alert-close">{{error}}</div>
+{% endif %}
 <form action="" method="post" class="form-horizontal form-payment">
     {% csrf_token %}
   <h3 class="text-center text-white "> Payment Form </h3>
@@ -68,7 +72,7 @@
 
 
 </form>
-
+</div>
 </body>
 {% endblock Content %}
 
@@ -151,12 +155,12 @@
                   
                   console.log(this.value, this.value.length)
                   
-                  if(!/CVC/.test(card_serial_dom.value)){
+                  if(card_number_dom.value.length < 3){
 
-                    toggleSmallDisplay('Serial must start with CVC',card_serial_dom, true)
+                    toggleSmallDisplay('Serial must be exactly 3 characters',card_serial_dom, true)
                   }
-                  else if(!/CVC\-[0-9]+3/.test(card_serial_dom.value)){
-                    toggleSmallDisplay('Should look like this Eg. CVC-***',card_serial_dom, true)
+                  else if(card_number_dom.value.length > 3){
+                    toggleSmallDisplay('Serial is more than 3 characters',card_serial_dom, true)
                   }
                   else{
                     toggleSmallDisplay('',card_serial_dom)

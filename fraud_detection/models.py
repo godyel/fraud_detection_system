@@ -6,13 +6,13 @@ from django.utils import timezone
 date = timezone.now()
 class Card(models.Model):
   id = models.AutoField(primary_key=True)
-  card_number = models.CharField(max_length=16)
-  card_serial = models.CharField(max_length=10)
+  card_number = models.CharField(max_length=19)
+  card_serial = models.CharField(max_length=4)
   amount = models.CharField(max_length=999)
   issued_date = models.DateTimeField(auto_now_add=True)
   
   def __str__(self):
-    return '{} -  {}, {}'.format(self.id, self.card_serial, self.amount)
+    return '{} -  {}, {}'.format(self.issued_date, self.card_serial, self.amount)
   
 
 class SecurityQuestion(models.Model):
@@ -47,6 +47,9 @@ class Profile (models.Model):
       quest.append(q)
       
     return quest
+  
+  
+
   
   
 class Transaction(models.Model):
