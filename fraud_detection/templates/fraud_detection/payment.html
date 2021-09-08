@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block Title %} Payment {% endblock Title %}
+{% block BodyClassToggler %}loginWrapper{% endblock BodyClassToggler %}
+
+{% block Content %}
+<div class="background-placeholder">
+  <img src="{% static 'img/creditimg.jpg' %}" alt="">
+</div>
+<form action="" method="post" class="form-horizontal form-payment">
+    {% csrf_token %}
+  <h3 class="text-center text-white "> Payment Form </h3>
+  <div class="lines mb-3">
+      <hr class="m-2" style="width: 50px; height: 3px; color: #CB69C1;">
+      <hr class="m-2" style="width: 50px; height: 3px; color: #BE81EA;">
+  </div>
+
+  <!-- Payment Details -->
+  <label for="payment-details" class="mb-2"> Payment Details </label>
+
+  <!-- Card Number -->
+  <div class="input-group">
+      <span class="input-group-text" id="basic-addon1">   <i class="fa fa-credit-card icon"></i></span>
+      <input required type="text" class="form-control" placeholder="Card No 1111-2222-3333-4444" aria-label="card-number" name="card_number"
+          aria-describedby="basic-addon1">
+    </div>
+    <small class="">input error</small>
+
+  <!-- CVC -->
+  <div class="input-group">
+      <span class="input-group-text" id="basic-addon1">  <i class="fa fa-user icon"></i> </span>
+      <input required type="text" class="form-control" placeholder="CVC 682" aria-label="cvc" name="card_serial"
+          aria-describedby="basic-addon1">
+  </div>
+  <small class="">input error</small>
+
+  <div class="form-group">
+      <div class="row">
+          <div class="col-md-6">
+              <div class=" input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1">  <i class="fa fa-calendar icon" aria-hidden="true"></i></span>
+                  <input required type="date" name='created_at' class="form-control" placeholder="Expiry Date" aria-label="expirydate"
+                      aria-describedby="basic-addon1">
+              </div>
+          </div>
+          <div class="col-md-6 col-sm-6">
+              <div class=" input-group mb-0">
+                  <span class="input-group-text" id="basic-addon1"><i class="fa fa-money icon" aria-hidden="true"></i></span>
+                  <input required name='amount' type="text" class="form-control" placeholder="Amount" aria-label="amount"
+                      aria-describedby="basic-addon1">
+              </div>
+              <small class="">input error</small>
+          </div>
+      </div>
+  </div>
+
+   <!-- Button -->
+   <div class="form-group text-center">
+      <div class="col-md-12">
+          <button id="account-button" type="submit" class="form-control btn btn-success"> Check out </button>
+      </div>
+  </div>
+  
+
+
+
+
+
+</form>
+
+</body>
+{% endblock Content %}
+
+
+{% block Script %}
+  <script>
+
+    // 
+
+    const setCardNumber = val => {
+      document.querySelector('input[name^="card_number"').value = val
+    }
+
+    const input_pattern = (dom, event) => {
+        const dash_pattern = [4, 9, 14]
+        var str = dom.value;
+
+        if(event.keyCode === 8)
+          return;
+
+
+        if(str.length > 19){
+          setCardNumber(str.slice(0,-1))
+        }
+
+
+        if(dash_pattern.includes(str.length)){
+          str += '-'
+          setCardNumber(str)
+        }
+
+    }
+
+    const toggleSmallDisplay = (text, input, show=false) => {
+      const small = input.parentElement.nextElementSibling
+      if(show){
+
+        small.setAttribute('class', 'error')
+        small.textContent = text
+
+      }
+      else
+        small.classList.remove('error') 
+
+    }
+
+    const inputMaxLength = (max, input) => {
+
+      const small = document.createElement('small')
+      small.setAttribute('class', 'text-warning')
+
+      const len = input.name === 'card_number' ? 16 : 8
+
+      if(input.value.length < max || input.value.length > max){
+        toggleSmallDisplay('must have ' + len + ' characters', input, true)
+      }else{
+        toggleSmallDisplay(' must have ' + len + ' characters', input, false)
+      }
+       
+
+    }
+
+    // validation forms
+    const addEventsToInputs = () => {
+        const inputs = document.querySelectorAll('input[name^="card_"], input[name^="amount"')
+        console.log(inputs)
+        inputs.forEach( input => {
+            input.addEventListener('keyup', function(e){
+
+                if(this.name ==='card_number'){
+                  const card_number_dom = this
+               
+                  input_pattern(card_number_dom, e)
+
+                  inputMaxLength(19, card_number_dom)
+                  
+                }
+                if(this.name ==='card_serial'){
+                  const card_serial_dom = this
+                  
+                  console.log(this.value, this.value.length)
+                  
+                  if(!/CVC/.test(card_serial_dom.value)){
+
+                    toggleSmallDisplay('Serial must start with CVC',card_serial_dom, true)
+                  }
+                  else if(!/CVC\-[0-9]+3/.test(card_serial_dom.value)){
+                    toggleSmallDisplay('Should look like this Eg. CVC-***',card_serial_dom, true)
+                  }
+                  else{
+                    toggleSmallDisplay('',card_serial_dom)
+                  }
+                  
+               
+                 /* inputMaxLength(7, card_serial_dom) */
+                  
+                }
+
+                //Input Amount 
+                if(this.name === 'amount'){
+                  const amount_dom  = this
+                  
+                  if(!/[0-9]*/.test(amount_dom.value)){
+                    toggleSmallDisplay('Must contain only numbers', amount_dom, true)
+                    console.log('Error')
+                  }else{
+                    console.log('Success')
+                    toggleSmallDisplay('',amount_dom)
+                  }
+
+                  
+
+                }
+
+          
+            })
+        })
+    }
+
+
+
+
+    /**** Start ****/
+    (function() {
+       addEventsToInputs() 
+    })()
+
+  </script>
+{% endblock Script %}

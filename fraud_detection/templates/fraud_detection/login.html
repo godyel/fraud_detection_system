@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block Title %} Login {% endblock Title %}
+{% block BodyClassToggler %}loginWrapper{% endblock BodyClassToggler %}
+
+{% block Content %}
+<div class="frmPage">
+  <div class="mb-4 top-content">
+      <h1>LOGO</h1>
+      <h3>Sign in to BBPee</h3>
+  </div>
+  <form action="" method='POST' class="form-horizontal form-login">
+  
+      {% csrf_token %}
+      <!-- Text input -->
+      <div class="form-group">
+          <label class="mb-2 col-md-4 control-label" for="username">
+              Username
+          </label>  
+          <div class="col-md-12">
+              <input name="username" type="text"  class="mb-3 form-control" required>
+          </div>
+      </div>
+
+      <!-- Password input-->
+      <div class="form-group">
+          <div class="row">
+              <div class="col-md-6">
+                  <label class="mb-2 col-md-6 col-sm-6 control-label" for="password">
+                      Password
+                  </label> 
+              </div>
+              <div class="col-md-6 col-sm-6 forgot-password">
+                  <a href="">Forgot Password?</a>
+              </div>
+          </div>
+          <div class="col-md-12">
+              <input name="password" type="password" class=" mb-3 form-control input-md">
+          </div>
+      </div>
+
+      <!-- Button -->
+      <div class="form-group text-center">
+          <div class="col-md-12">
+              <button type="submit" class="form-control btn btn-success">Sign in</button>
+          </div>
+      </div>
+     {% if err %}      
+     <p class='text-warning py-2'>
+        User credentials does not exits
+    </p>
+     {% endif %}      
+  </form>
+
+
+  <p class=" mt-3 login-callout"> New to BBPee? <a href="{% url 'fraud_detection:register' %}">Create an account</a>.</p>
+  
+
+</div> <!-- .frmPage -->
+{% endblock Content %}
