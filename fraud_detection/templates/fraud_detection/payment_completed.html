@@ -9,6 +9,12 @@
 {% block BodyClassToggler %}loginWrapper{% endblock BodyClassToggler %}
 
 {% block Content %}
+  <div id="loading-screen" class="loading-screen d-flex align-items-center justify-content-center" style="position: fixed; width: 100%;height: 100vh;background: #575779 !important;">
+    <div class="spinner-grow text-info" role="status">
+      <span class="visually-hidden"><p class="text-white">Loading...</p></span>
+    </div>
+    <h2>Transaction Loading ...</h2>
+  </div>
   <div class='d-flex align-items-center flex-column text-white'>
     <h3 class="display-3">Transaction completed</h3>
     <h4>Thank you</h4>
@@ -20,3 +26,14 @@
     <a href="{% url 'fraud_detection:payment' %}" class="btn btn-warning">continue</a>
   </div>
 {% endblock Content %}
+
+{% block Script %}
+  <script>
+
+    setTimeout(() => {
+      const screenEl = document.getElementById('loading-screen')
+        screenEl.classList.add('d-none')
+    }, 1000)
+
+  </script>
+{% endblock Script %}

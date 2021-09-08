@@ -1,10 +1,11 @@
 
 import uuid
-from django.contrib.auth import SESSION_KEY
+import pytest
+from django.contrib.auth.models import Group
 from django.http.response import HttpResponse
-# from django.contrib.sessions import models
 from fraud_detection.models import Profile, Transaction
 from django.shortcuts import reverse, HttpResponseRedirect
+
 
 
 def getFormError(key, errors):
@@ -45,9 +46,9 @@ def CardData():
   
   
   
-def checkTransactionReach10(username):
+def checkTransactionReachLimit(username, l = 7):
   t = Transaction.objects.filter(profile__user__username= username)
-  flag = len(t) == 5
+  flag = len(t) == l
   username.groups.add(2)
   username.save()
   print('T:.', t)
@@ -68,9 +69,11 @@ def fraud_check(_username):
 
 def controlTransactionView(username):
   print('control func')
-  if checkTransactionReach10(username):
+  if checkTransactionReachLimit(username):
     return HttpResponseRedirect(reverse('fraud_detection:account_verify'))
-  elif fraud_check(username):
+  elif fraud_check(username) and checkTransactionReachLimit(username, 15):
     return HttpResponseRedirect(reverse('fraud_detection:account_verify'))
   else:
     return HttpResponseRedirect(reverse('fraud_detection:payment_completed'))
+  
+  

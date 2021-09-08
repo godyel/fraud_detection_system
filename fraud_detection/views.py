@@ -1,4 +1,4 @@
-from fraud_detection.models import Profile, Transaction
+from fraud_detection.models import Profile, SecurityQuestion, Transaction
 from fraud_detection.decorators import account_completed
 from helpers.funcs import controlTransactionView, getCleanErrors
 from django.contrib.auth.models import User
@@ -67,19 +67,64 @@ def register(request):
 @account_completed
 def account_registration(request):
   if request.method == 'POST':
+    data = request.POST
+    print('Form Data',data.get('question1'))
+    
+    q1 = data.get('question1')
+    a1 = data.get('answer1')
+    Q1 = SecurityQuestion(question=q1, answer=a1)
+    Q1.save()
+    q2 = data.get('question2')
+    a2 = data.get('answer2')
+    Q2 = SecurityQuestion(question=q2, answer=a2)
+    Q2.save()
+    q3 = data.get('question3')
+    a3 = data.get('answer3')
+    Q3 = SecurityQuestion(question=q3, answer=a3)
+    Q3.save()
+    
+    
+    #####
+    
+    
+    
     form = AccountForm(request.POST)
     if form.is_valid():
       
-      # print('Form Data', form.cleaned_data)
+      print('Form Data', form.cleaned_data)
       form.save()
       print("Form saved")
+      
+      instance = Profile.objects.get(user = request.user)
+      # instance = form.cleaned_data
+      instance.question.add(Q1, Q2)
+      instance.question.add(Q3)
+      instance.save()
+      
+      print('Questions saved')
+      
       return HttpResponseRedirect(reverse('fraud_detection:payment'))
     print(form.errors.as_data())
   return render(request, 'fraud_detection/account_registration.html')
 
 
 def account_verification(request):
-  return render(request, 'fraud_detection/account_verification.html')
+  context = {}
+  question_flag = True
+  q = Profile.objects.get(user = request.user)
+  context['questions'] = q.get_all_questions
+  if request.method == 'POST':
+    data = [request.POST.get(q) for q in request.POST if q != 'csrfmiddlewaretoken']
+    print(data)
+    for key  in  range(len(context['questions'])):
+      if str(context['questions'][key].answer).lower() != str(data[key]).lower():
+        question_flag = False
+        
+    if question_flag:
+      return HttpResponseRedirect(reverse('fraud_detection:payment'))
+    return HttpResponseRedirect(reverse('fraud_detection:login'))
+      
+  return render(request, 'fraud_detection/account_verification.html',  context)
 
 @login_required(login_url='/app/login')
 def payment(request):
