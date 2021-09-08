@@ -33,8 +33,8 @@ def card_number_generator(interval = 2, length=16):
   return str_pattern[0:-1]
 
 
-def card_serial_generator(initial='CVC', length=3):
-  return  initial +' '+ str(uuid.uuid4().int)[0:length]
+def card_serial_generator(length=3):
+  return  str(uuid.uuid4().int)[0:length]
 
 def CardData():
   return {
@@ -43,8 +43,9 @@ def CardData():
     'amount': str(uuid.uuid4().int)[0:5],
   }  
   
-  
-  
+def check_card_validation(username):
+  pass
+  p = Profile.objects.get(user = username)
   
 def checkTransactionReachLimit(username, l = 7):
   t = Transaction.objects.filter(profile__user__username= username)
@@ -67,7 +68,7 @@ def fraud_check(_username):
   return True if flag else False
 
 
-def controlTransactionView(username):
+def controlTransactionView(username, data=[]):
   print('control func')
   if checkTransactionReachLimit(username):
     return HttpResponseRedirect(reverse('fraud_detection:account_verify'))
