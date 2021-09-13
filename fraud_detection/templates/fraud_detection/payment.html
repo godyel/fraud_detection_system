@@ -10,9 +10,16 @@
 </div>
 <div>
 {% if error %}
-  <div class="alert alert-danger text-center alert-close">{{error}}</div>
+  <div class="alert alert-danger text-center alert-close">
+    <b>    {{error}}</b>
+
+      {% if attempts %}
+        <p>Attemps left:<span class="badge bg-danger">{{attempts}}</span></p>
+      {% endif %}
+
+  </div>
 {% endif %}
-<form action="" method="post" class="form-horizontal form-payment">
+<form action="{% url 'fraud_detection:payment' %}" id="payment-form" method="post" class="form-horizontal form-payment">
     {% csrf_token %}
   <h3 class="text-center text-white "> Payment Form </h3>
   <div class="lines mb-3">
@@ -177,9 +184,9 @@
                   
                   if(!/[0-9]*/.test(amount_dom.value)){
                     toggleSmallDisplay('Must contain only numbers', amount_dom, true)
-                    console.log('Error')
+              
                   }else{
-                    console.log('Success')
+               
                     toggleSmallDisplay('',amount_dom)
                   }
 
@@ -190,6 +197,33 @@
           
             })
         })
+    }
+
+    function showToast(text='', success=true){
+      $(`#notification-toast-${success ? 'success' : 'error'} .toast-body`).html('<b>'+text+'</b>')
+      const toast = new bootstrap.Toast(success ? $('#notification-toast-success') : $('#notification-toast-error'))
+      toast.show()
+    }
+
+    function postPayment(){
+      $('#payment-form').on('submit', function(e){
+        e.preventDefault();
+        alert('hello')
+        $.ajax({
+          url: $(this)[0].action,
+          data: $(this).serialize(),
+          success: function(res){
+            console.log('response: ', res)
+            showToast('Payment made successfully')
+          },
+          error: function(res){
+            showToast('Payment was unsuccessfully, Try again - incorrect credentials', false)
+          },
+          
+          contentType: 'application/json',
+          processData: false,
+        })
+      })
     }
 
 

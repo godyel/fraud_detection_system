@@ -1,3 +1,4 @@
+from django.http.response import JsonResponse
 from fraud_detection.models import Profile, SecurityQuestion, Transaction
 from fraud_detection.decorators import account_completed
 from helpers.funcs import controlTransactionView, getCleanErrors
@@ -42,6 +43,7 @@ def loginUser(request):
           request.session['username'] = username
           request.session['fullname'] = user.first_name
           request.session['email'] = user.email
+          request.session['count'] = 6
           return HttpResponseRedirect(reverse('fraud_detection:account_registration'))
     else:
       context['err'] = getCleanErrors('username', formSet.errors)
@@ -132,7 +134,9 @@ def account_verification(request):
 
 @login_required(login_url='/app/login')
 def payment(request):
-  
+  print(request.session['count'])
+
+  print(request.session['count'])
   
   context = {}
   if request.method == 'POST':
@@ -147,10 +151,18 @@ def payment(request):
         t = Transaction.objects.create(amount=form.cleaned_data.get('amount'), profile = profile)
         t.save()
         print('Transaction passed')
+        request.session['count'] = 5
         return controlTransactionView(request.user,)
       else:
+        request.session['count'] = request.session['count'] - 1
         context['error'] = 'Transaction failed,card details is incorrect'
         print(form.errors.as_data())
+        
+  if request.session['count'] >= 1 and request.session['count'] <= 3:
+    context['attempts'] = request.session['count']
+  if request.session['count'] <= 0:
+    return HttpResponseRedirect(reverse('fraud_detection:login'))
+
           
   return render(request, 'fraud_detection/payment.html', context)
   
