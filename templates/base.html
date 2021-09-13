@@ -14,7 +14,14 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
     <!-- FONTAWESOME CDN -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+
+    <!-- JQUERY LINK -->
+    <script src="{% static 'js/jquery.3.2.1.min.js' %}"></script>
+
+    <!-- BOOTSTRAP LINK -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
    
 </head>
 
@@ -23,6 +30,28 @@
       
     <div class="position-fixed top-0 mt-4" style='right: 0; margin-right: 1rem;'>
         <a href="{% url 'fraud_detection:logout'%}" class="btn btn-warning text-white" style="background: #575779; border-color: #575779;">{{request.user.username}} <i class="fa fa-sign-out"></i></a>
+    </div>
+    <div id="notification-toast-success" class="toast position-absolute bottom-0 end-0 bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-success text-white">
+        <img src="" class="rounded me-2" alt="">
+        <strong class="me-auto">Payment notification</strong>
+        <small>Success</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body ">
+        Hello, world! This is a toast message.
+      </div>
+    </div>
+    <div id="notification-toast-error" class="toast position-absolute bottom-0 end-0 bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-danger text-white">
+        <img src="" class="rounded me-2" alt="">
+        <strong class="me-auto">Payment notification</strong>
+        <small>Error</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        Hello, world! This is a toast message.
+      </div>
     </div>
     {% endif %}
     {% block Content %}
