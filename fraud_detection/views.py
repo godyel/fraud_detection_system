@@ -1,7 +1,7 @@
 from django.http.response import JsonResponse
 from fraud_detection.models import Profile, SecurityQuestion, Transaction
-from fraud_detection.decorators import account_completed
-from helpers.funcs import controlTransactionView, getCleanErrors
+from fraud_detection.decorators import account_completed, incompleted_transaction
+from helpers.funcs import  getCleanErrors,  get_group, remove_user_from_group
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render,HttpResponseRedirect, reverse
@@ -114,11 +114,20 @@ def account_registration(request):
   return render(request, 'fraud_detection/account_registration.html')
 
 
+
+
 def account_verification(request):
   context = {}
   question_flag = True
   q = Profile.objects.get(user = request.user)
   context['questions'] = q.get_all_questions
+  t = None
+  try:
+    t = Transaction.objects.get(id = request.session['last_trans_id'])
+
+  except:
+    print('Last transaction not found')
+  
   if request.method == 'POST':
     data = [request.POST.get(q) for q in request.POST if q != 'csrfmiddlewaretoken']
     print(data)
@@ -126,17 +135,30 @@ def account_verification(request):
       if str(context['questions'][key].answer).lower() != str(data[key]).lower():
         question_flag = False
         
+    if not question_flag:
+      print(t)
+      t.delete()
+      remove_user_from_group(get_group('in_complete_transaction'), request.user)
+      print('transaction deleted successfully', 'user does not have any ')
+      
+    
+    
+        
     if question_flag:
+      t.completed = True
+      t.save()
+      print('transaction completed successfully')
       return HttpResponseRedirect(reverse('fraud_detection:payment'))
     return HttpResponseRedirect(reverse('fraud_detection:login'))
       
   return render(request, 'fraud_detection/account_verification.html',  context)
 
-@login_required(login_url='/app/login')
-def payment(request):
-  print(request.session['count'])
 
-  print(request.session['count'])
+
+
+@login_required(login_url='/app/login')
+@incompleted_transaction
+def payment(request):
   
   context = {}
   if request.method == 'POST':
@@ -145,14 +167,14 @@ def payment(request):
     data = [ request.POST.get(card) for card in request.POST if card != 'csrfmiddlewaretoken' ]
     if form.is_valid():
       profile = Profile.objects.get(user = request.user)
-      print(profile.card.card_number,data[0])
-      print(profile.card.card_number == data[0])
       if profile.card.card_number == data[0] and profile.card.card_serial == data[1]:
         t = Transaction.objects.create(amount=form.cleaned_data.get('amount'), profile = profile)
         t.save()
-        print('Transaction passed')
+        request.session['last_trans_id'] = t.id
+        profile.user.groups.add(get_group('in_complete_transaction'))
+        profile.save()
         request.session['count'] = 5
-        return controlTransactionView(request.user,)
+        return HttpResponseRedirect(reverse('fraud_detection:account_verify'))
       else:
         request.session['count'] = request.session['count'] - 1
         context['error'] = 'Transaction failed,card details is incorrect'

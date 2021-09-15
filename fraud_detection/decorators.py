@@ -10,3 +10,14 @@ def account_completed(func):
       return func(request, *args, **kwargs)
     return HttpResponseRedirect(reverse('fraud_detection:payment'))
   return wrapper
+
+
+
+def incompleted_transaction(func):
+  def wrapper(request, *args, **kwargs):
+    profile = Profile.objects.get(user = request.user)
+    print(profile.is_completed_transaction)
+    if profile.is_completed_transaction:
+      return HttpResponseRedirect(reverse('fraud_detection:account_verify'))
+    return func(request, *args, **kwargs)
+  return wrapper
