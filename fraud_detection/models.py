@@ -1,9 +1,9 @@
+from helpers.funcs import get_group
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
 # Create your models here.
 
-date = timezone.now()
+# date = timezone.now()
 class Card(models.Model):
   id = models.AutoField(primary_key=True)
   card_number = models.CharField(max_length=19)
@@ -29,11 +29,11 @@ class Profile (models.Model):
   email = models.EmailField(max_length=200)
   address = models.CharField(max_length=100, blank=True)
   city = models.CharField(max_length=100, blank=True)
-  dob = models.DateField(blank=True, default=timezone.now())
+  dob = models.DateField(blank=True, auto_now_add=True)
   gender = models.CharField(max_length=50, choices=GENDER, default='Male')
-  user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
-  question = models.ManyToManyField(to=SecurityQuestion, blank=True, null=True)
-  card = models.OneToOneField(Card, on_delete=models.CASCADE, related_name='profile_card', blank=True, null=True)
+  user = models.ForeignKey(to=User, related_name='user', on_delete=models.CASCADE)
+  question = models.ManyToManyField(to=SecurityQuestion, blank=True)
+  card = models.OneToOneField(to=Card, on_delete=models.CASCADE, related_name='profile_card', blank=True, null=True)
   completed = models.BooleanField(default=False,null=True)
   
   def __str__(self):
@@ -48,13 +48,25 @@ class Profile (models.Model):
       
     return quest
   
+  @property
+  def get_user_groups(self):
+    return self.user.groups.all()
   
+  
+  @property
+  def is_completed_transaction(self):
+    groups = self.get_user_groups
+    print(groups)
+    exist = [ g.name for g in groups if g.name == get_group('incompleted_transaction') ] != []
+
+    return  exist
 
   
   
 class Transaction(models.Model):
   amount = models.CharField(max_length=9999)
   profile = models.ForeignKey(Profile, related_name='profile', on_delete=models.CASCADE, null=True)
+  completed = models.BooleanField(default=False)
   created_at = models.DateTimeField(auto_now_add=True)
   
   def __str__(self):

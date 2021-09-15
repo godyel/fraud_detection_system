@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from .models import Card, Profile
 from django.contrib.auth import authenticate
 # Create your tests here.
@@ -12,11 +12,21 @@ class UserTestCase(TestCase):
       'password': '12345',
       'first_name': 'John Doe'
     }
+    
+    group1 = Group.objects.create(name='Users')
+    group1.save()
+    # group2 = Group.objects.get_or_create(name='Masters')
+    
     user2 = User.objects.create(username=user['username'])
     user2.first_name= user['first_name']
     user2.set_password(user['password'])
+    user2.groups.add(group1)
+    # user2.groups.add(group2)
     user2.save()
     profile = Profile.objects.all()
+  
+    
+    
     # print(profile)
     
   def test_user_exist(self):
@@ -52,11 +62,17 @@ class UserTestCase(TestCase):
     prof.save()
     
     prof = Profile.objects.get(id=1)
-    print(prof.card)
     self.assertEqual(prof.card is not None, True)
     self.assertEqual(card is not None, True)
     self.assertEqual(card.amount, card_info['amount'])
     self.assertEqual(card.card_serial, card_info['card_serial'])
     self.assertEqual(card.card_number, card_info['card_number'])
 
+
+  def test_user_belongs_to_a_group(self):
+    p = Profile.objects.get(user__username = 'Teedari')
+    
+    # exits = filter(lambda group: group.name == 'User', [p.get_user_groups])
+    # print(exits)
+    self.assertEqual(True, p.user_group_exits)
     
